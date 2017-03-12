@@ -32,6 +32,7 @@ public class CSVReader implements Iterator<String[]> {
 	 * InputStream.
 	 * 
 	 * @param input
+	 *            the file that user input.
 	 */
 	public CSVReader(InputStream input) {
 		this.input = input;
@@ -42,6 +43,7 @@ public class CSVReader implements Iterator<String[]> {
 	 * name or URL.
 	 * 
 	 * @param name
+	 *            is the name of the file.
 	 */
 	public CSVReader(String name) {
 		String URLPATTERN = "^\\w\\w+://\\S+";
@@ -132,6 +134,7 @@ public class CSVReader implements Iterator<String[]> {
 			for (int x = 0; x < line.length(); x++) {
 				char cursor = line.charAt(x);
 				if (cursor == '"' && countQuot <= 2) {
+					// find have quotes case.
 					word.append(cursor);
 					countQuot += 1;
 					continuos = false;
@@ -140,13 +143,24 @@ public class CSVReader implements Iterator<String[]> {
 						continuos = true;
 					}
 				} else if (x == line.length() - 1) {
-					word.append(cursor);
-					temp.add(word.toString());
-					word = new StringBuilder();
+					// end of line case.
+					if (cursor != this.delim) {
+						// if it end with another char not delimeter.
+						word.append(cursor);
+						temp.add(word.toString());
+						word = new StringBuilder();
+					} else {
+						// if it end with delimeter
+						temp.add(word.toString());
+						temp.add("");
+						word = new StringBuilder();
+					}
 				} else if (cursor == this.delim && continuos) {
+					// check and add char in quote case.
 					temp.add(word.toString());
 					word = new StringBuilder();
 				} else {
+					// normal case.
 					word.append(line.charAt(x));
 				}
 
@@ -167,9 +181,10 @@ public class CSVReader implements Iterator<String[]> {
 	@Override
 	public void remove() {
 	}
+
 	public static void main(String[] args) {
 		CSVReader csv = new CSVReader("sample.csv");
-		while(csv.hasNext()){
+		while (csv.hasNext()) {
 			System.out.println(Arrays.toString(csv.next()));
 		}
 	}
