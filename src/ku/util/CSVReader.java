@@ -182,11 +182,4 @@ public class CSVReader implements Iterator<String[]> {
 	public void remove() {
 	}
 
-	public static void main(String[] args) {
-		CSVReader csv = new CSVReader("sample.csv");
-		while (csv.hasNext()) {
-			System.out.println(Arrays.toString(csv.next()));
-		}
-	}
-
 }
