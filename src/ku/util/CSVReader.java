@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The class that use for read the CSV file and return it as arrays of the
@@ -26,10 +27,22 @@ public class CSVReader implements Iterator<String[]> {
 	private BufferedReader breader;
 	private String line = "";
 
+	/**
+	 * The constructor that use when the user call CSVReader by input is
+	 * InputStream.
+	 * 
+	 * @param input
+	 */
 	public CSVReader(InputStream input) {
 		this.input = input;
 	}
 
+	/**
+	 * The constructor that use when the user call CSVReader by input is File
+	 * name or URL.
+	 * 
+	 * @param name
+	 */
 	public CSVReader(String name) {
 		String URLPATTERN = "^\\w\\w+://\\S+";
 		if (name.matches(URLPATTERN)) {
@@ -153,6 +166,12 @@ public class CSVReader implements Iterator<String[]> {
 
 	@Override
 	public void remove() {
+	}
+	public static void main(String[] args) {
+		CSVReader csv = new CSVReader("sample.csv");
+		while(csv.hasNext()){
+			System.out.println(Arrays.toString(csv.next()));
+		}
 	}
 
 }
