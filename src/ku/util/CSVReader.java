@@ -133,7 +133,7 @@ public class CSVReader implements Iterator<String[]> {
 			boolean continuos = true;
 			for (int x = 0; x < line.length(); x++) {
 				char cursor = line.charAt(x);
-				if (cursor == '"' && countQuot <= 2) {
+				if (cursor == '"' && countQuot <= 2 && x!= line.length()-1) {
 					// find have quotes case.
 					word.append(cursor);
 					countQuot += 1;
@@ -180,6 +180,13 @@ public class CSVReader implements Iterator<String[]> {
 
 	@Override
 	public void remove() {
+	}
+
+	public static void main(String[] args) {
+		CSVReader csv = new CSVReader("sample.csv");
+		while (csv.hasNext()) {
+			System.out.println(Arrays.toString(csv.next()));
+		}
 	}
 
 }
